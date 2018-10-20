@@ -11,17 +11,14 @@ MODULE_LICENSE("GPL");
 static struct proc_dir_entry* my_proc_file;
 
 /* Initialize counter */
-static atomic_t my_counter = ATOMIC_INIT(0);
+static atomic_t my_counter = ATOMIC_INIT(-1);
 
 #define procfs_name "helloworld"
 
 static int my_show(struct seq_file *m, void *v)
 {
-    /* Print my_counter atomically */
-    seq_printf(m, "%s %d\n", "Hello World!", atomic_read(&my_counter));
-    
-    /* Increase my_counter by one */
-    atomic_inc(&my_counter);
+    /* Print and increase my_counter atomically */
+    seq_printf(m, "%s %d\n", "Hello World!", atomic_inc_return(&my_counter));
     return 0;
 }
 
